@@ -3,366 +3,508 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BABA CI - Collection 2026</title>
+    <title>BABA CI - Boutique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: #f9f9f9;
-            color: #333;
-        }
-
+        /* ===== STYLES ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f5f5f5; }
         /* Header */
         .hero {
             background: #000;
             color: white;
             text-align: center;
-            padding: 60px 20px 80px;
-            position: relative;
-            overflow: hidden;
+            padding: 50px 20px;
+            border-bottom: 4px solid #D4AF37;
         }
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: -30%;
-            right: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
         .hero h2 {
             font-size: 1.8rem;
             color: #D4AF37;
             letter-spacing: 4px;
-            font-weight: 300;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-
         .hero h1 {
             font-size: 5rem;
             font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 20px;
         }
-
         .hero h1 span {
             color: #D4AF37;
             display: block;
             font-size: 4rem;
         }
-
         .hero p {
             font-size: 1.3rem;
             max-width: 700px;
-            margin: 30px auto;
+            margin: 20px auto;
             color: #ccc;
         }
-
-        /* Infos bar */
+        /* Infos */
         .info-bar {
             background: #D4AF37;
-            color: #000;
             padding: 15px;
             display: flex;
             justify-content: center;
             gap: 30px;
             flex-wrap: wrap;
             font-weight: 600;
-            border-bottom: 3px solid #000;
         }
-
-        .info-bar i {
-            margin-right: 8px;
+        /* Bouton admin */
+        .admin-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #D4AF37;
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
         }
-
+        /* Modal admin */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid #D4AF37;
+            z-index: 2000;
+            display: none;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal.show { display: block; }
+        .modal input, .modal textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+        }
+        .upload-area {
+            border: 3px dashed #D4AF37;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            background: #f9f9f9;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        #preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            display: none;
+            border-radius: 8px;
+        }
+        .product-list {
+            margin: 20px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .product-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        .item-info { flex: 1; }
+        .delete-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn {
+            background: #D4AF37;
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin: 5px 0;
+        }
+        .btn-gray { background: #ccc; }
         /* Galerie */
         .gallery {
             max-width: 1300px;
-            margin: 60px auto;
+            margin: 50px auto;
             padding: 0 20px;
         }
-
         .gallery h2 {
-            font-size: 2.8rem;
-            margin-bottom: 40px;
-            border-left: 6px solid #D4AF37;
-            padding-left: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            border-left: 5px solid #D4AF37;
+            padding-left: 15px;
         }
-
-        .products-grid {
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 25px;
         }
-
         .card {
             background: white;
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(212, 175, 55, 0.3);
-        }
-
-        .card-img {
-            height: 260px;
-            overflow: hidden;
-        }
-
-        .card-img img {
+        .card img {
             width: 100%;
-            height: 100%;
+            height: 250px;
             object-fit: cover;
-            transition: transform 0.5s;
         }
-
-        .card:hover .card-img img {
-            transform: scale(1.05);
-        }
-
         .card-content {
-            padding: 20px;
+            padding: 15px;
         }
-
-        .card-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .card-content .price {
-            font-size: 2rem;
-            font-weight: 700;
+        .card h3 { font-size: 1.4rem; }
+        .price {
+            font-size: 1.8rem;
             color: #D4AF37;
+            font-weight: bold;
             margin: 10px 0;
         }
-
-        .card-content .price::after {
-            content: " FCFA";
-            font-size: 1rem;
-            color: #777;
-            font-weight: 400;
-        }
-
-        .card-content p {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
+        .price::after { content: " FCFA"; font-size: 1rem; color: #666; }
         .btn-wa {
             background: #25D366;
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 5px;
             width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            margin-top: 10px;
         }
-
-        .btn-wa:hover {
-            background: #20b859;
-        }
-
+        .btn-wa:hover { background: #20b859; }
         /* Footer */
         .footer {
             background: #000;
             color: white;
-            padding: 50px 20px 30px;
-            margin-top: 60px;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .footer-col h4 {
-            color: #D4AF37;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        .footer-col p {
-            margin: 10px 0;
-            color: #ccc;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-col i {
-            color: #D4AF37;
-            width: 20px;
-        }
-
-        .copyright {
+            padding: 40px 20px;
+            margin-top: 50px;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            color: #888;
         }
-
-        .admin-link {
+        .footer p { margin: 10px 0; color: #ccc; }
+        .footer i { color: #D4AF37; width: 25px; }
+        .password-modal {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #D4AF37;
-            color: #000;
-            padding: 12px 25px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 600;
-            border: 2px solid white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .admin-link:hover {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: white;
-            color: #D4AF37;
-            border-color: #D4AF37;
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid #D4AF37;
+            z-index: 2500;
+            display: none;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
         }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; }
-            .hero h1 span { font-size: 2.8rem; }
-            .info-bar { flex-direction: column; align-items: center; gap: 10px; }
+        .password-modal.show { display: block; }
+        .password-modal input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- Hero section (design de l'image) -->
+    <!-- HEADER -->
     <div class="hero">
         <h2>BABA CI</h2>
         <h1>COLLECTION <span>2026</span></h1>
         <p>L'ÉLÉGANCE INTEMPORELLE<br>Découvrez notre sélection de montres de luxe et connectées.</p>
     </div>
 
-    <!-- Barre d'informations -->
+    <!-- INFOS -->
     <div class="info-bar">
-        <span><i class="fas fa-map-marker-alt"></i> Yopougon, Côte d'Ivoire</span>
-        <span><i class="fas fa-phone-alt"></i> 09 00 48 03</span>
+        <span><i class="fas fa-map-marker-alt"></i> Yopougon</span>
+        <span><i class="fas fa-phone"></i> 09 00 48 03</span>
         <span><i class="far fa-envelope"></i> christdior1@gmail.com</span>
-        <span><i class="fab fa-whatsapp"></i> 225 09 00 48 03</span>
+        <span><i class="fab fa-whatsapp"></i> 22509004803</span>
     </div>
 
-    <!-- Galerie des produits -->
+    <!-- BOUTON ADMIN (ouvre la demande de mot de passe) -->
+    <button class="admin-btn" id="adminBtn"><i class="fas fa-lock"></i> Administration</button>
+
+    <!-- MODAL MOT DE PASSE -->
+    <div class="password-modal" id="passwordModal">
+        <h3>Code secret</h3>
+        <input type="password" id="codeInput" placeholder="Entrez le code">
+        <button class="btn" id="submitCode">Valider</button>
+        <button class="btn btn-gray" id="cancelCode">Annuler</button>
+        <p style="margin-top:10px;">Code par défaut : <strong>2026</strong></p>
+    </div>
+
+    <!-- MODAL ADMIN (visible après code correct) -->
+    <div class="modal" id="adminModal">
+        <h2 style="color:#D4AF37; text-align:center;">Gestion des articles</h2>
+        
+        <h3>Ajouter un article</h3>
+        <input type="text" id="prodName" placeholder="Nom de la montre">
+        <input type="number" id="prodPrice" placeholder="Prix en FCFA">
+        <textarea id="prodDesc" placeholder="Description" rows="2"></textarea>
+        
+        <div class="upload-area" id="uploadArea">
+            <i class="fas fa-cloud-upload-alt" style="font-size:2rem;"></i>
+            <p>Cliquez pour ajouter une photo</p>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;">
+            <img id="preview" src="#" alt="Aperçu">
+        </div>
+        
+        <button class="btn" id="saveBtn">Publier l'article</button>
+        
+        <h3 style="margin-top:20px;">Articles existants</h3>
+        <div class="product-list" id="productList"></div>
+        
+        <button class="btn btn-gray" id="closeAdminBtn">Fermer</button>
+    </div>
+
+    <!-- GALERIE PRODUITS -->
     <div class="gallery">
         <h2>NOS MONTRES</h2>
-        <div class="products-grid" id="productsGrid"></div>
+        <div class="grid" id="productsGrid"></div>
     </div>
 
-    <!-- Lien vers l'administration (visible pour vous) -->
-    <a href="admin.html" class="admin-link"><i class="fas fa-cog"></i> Administration</a>
-
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-col">
-                <h4>BABA CI</h4>
-                <p><i class="fas fa-store"></i> Blog personnel • Ventes en ligne</p>
-                <p><i class="fas fa-map-pin"></i> Yopougon, Abidjan</p>
-            </div>
-            <div class="footer-col">
-                <h4>CONTACT</h4>
-                <p><i class="fas fa-phone"></i> 09 00 48 03</p>
-                <p><i class="far fa-envelope"></i> christdior1@gmail.com</p>
-            </div>
-            <div class="footer-col">
-                <h4>INFOS</h4>
-                <p><i class="fas fa-users"></i> +30K followers</p>
-                <p><i class="fas fa-users"></i> Communauté 239 membres</p>
-                <p><i class="fas fa-tag"></i> Promo 6900 FCFA</p>
-            </div>
-        </div>
-        <div class="copyright">
-            © 2026 BABA CI • Tous droits réservés
-        </div>
+        <p><i class="fas fa-store"></i> Blog personnel • Ventes en ligne</p>
+        <p><i class="fas fa-map-pin"></i> Yopougon, Côte d'Ivoire</p>
+        <p><i class="fas fa-phone"></i> 09 00 48 03</p>
+        <p><i class="far fa-envelope"></i> christdior1@gmail.com</p>
+        <p><i class="fas fa-users"></i> +30K followers • Communauté 239 membres</p>
+        <p><i class="fas fa-tag"></i> Promo 6900 FCFA</p>
+        <p style="margin-top:30px;">© 2026 BABA CI</p>
     </footer>
 
     <script>
-        // Charger les produits depuis le localStorage
-        let produits = [];
+        (function() {
+            // ===== DONNÉES =====
+            let produits = [];
+            const CODE_SECRET = "2026";
 
-        function chargerProduits() {
-            const saved = localStorage.getItem('babaProduits');
-            if(saved) {
-                produits = JSON.parse(saved);
-            } else {
-                // Produits par défaut
-                produits = [
-                    { id: 1, nom: 'Montre Or Noire', prix: '6900', desc: 'Élégance intemporelle • Cadran noir • Bracelet cuir', image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500' },
-                    { id: 2, nom: 'Collection Or Rose', prix: '15500', desc: 'Luxe et raffinement • Édition limitée', image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500' },
-                    { id: 3, nom: 'Chronographe Sport', prix: '25000', desc: 'Précision suisse • Mouvement automatique', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500' }
-                ];
-                localStorage.setItem('babaProduits', JSON.stringify(produits));
+            // ===== CHARGEMENT =====
+            function charger() {
+                const saved = localStorage.getItem('babaProduits');
+                if(saved) {
+                    produits = JSON.parse(saved);
+                } else {
+                    // Produits par défaut
+                    produits = [
+                        { id: 1, nom: 'Montre Or Noire', prix: '6900', desc: 'Élégance intemporelle', image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500' },
+                        { id: 2, nom: 'Collection Or Rose', prix: '15500', desc: 'Luxe et raffinement', image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500' },
+                        { id: 3, nom: 'Chronographe Sport', prix: '25000', desc: 'Précision suisse', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500' }
+                    ];
+                    localStorage.setItem('babaProduits', JSON.stringify(produits));
+                }
+                afficherGalerie();
+                if(document.getElementById('adminModal').classList.contains('show')) {
+                    afficherListeAdmin();
+                }
             }
-            afficherProduits();
-        }
 
-        function afficherProduits() {
-            const grid = document.getElementById('productsGrid');
-            if(produits.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; padding:40px;">Aucun produit pour le moment.</p>';
-                return;
-            }
-
-            let html = '';
-            produits.forEach(p => {
-                html += `
-                    <div class="card">
-                        <div class="card-img">
-                            <img src="${p.image}" alt="${p.nom}">
+            // ===== AFFICHAGE GALERIE =====
+            function afficherGalerie() {
+                const grid = document.getElementById('productsGrid');
+                if(produits.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center; padding:40px;">Aucun produit.</p>';
+                    return;
+                }
+                let html = '';
+                produits.forEach(p => {
+                    html += `
+                        <div class="card">
+                            <img src="${p.image}" alt="${p.nom}" onerror="this.src='https://via.placeholder.com/400'">
+                            <div class="card-content">
+                                <h3>${p.nom}</h3>
+                                <div class="price">${p.prix}</div>
+                                <p>${p.desc}</p>
+                                <button class="btn-wa" onclick="commander('${p.nom}', '${p.prix}')">
+                                    <i class="fab fa-whatsapp"></i> Commander
+                                </button>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <h3>${p.nom}</h3>
-                            <div class="price">${p.prix}</div>
-                            <p>${p.desc}</p>
-                            <button class="btn-wa" onclick="commander('${p.nom}', '${p.prix}')">
-                                <i class="fab fa-whatsapp"></i> Commander
+                    `;
+                });
+                grid.innerHTML = html;
+            }
+
+            // ===== WHATSAPP =====
+            window.commander = function(nom, prix) {
+                const msg = encodeURIComponent(`Bonjour, je suis intéressé par la montre ${nom} au prix de ${prix} FCFA.`);
+                window.open(`https://wa.me/22509004803?text=${msg}`, '_blank');
+            };
+
+            // ===== AFFICHAGE LISTE ADMIN =====
+            function afficherListeAdmin() {
+                const listDiv = document.getElementById('productList');
+                if(produits.length === 0) {
+                    listDiv.innerHTML = '<p style="text-align:center;">Aucun article.</p>';
+                    return;
+                }
+                let html = '';
+                produits.forEach(p => {
+                    html += `
+                        <div class="product-item">
+                            <img src="${p.image}" onerror="this.src='https://via.placeholder.com/50'">
+                            <div class="item-info">
+                                <strong>${p.nom}</strong><br>
+                                <small>${p.prix} FCFA</small>
+                            </div>
+                            <button class="delete-btn" onclick="supprimerArticle(${p.id})">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
+                listDiv.innerHTML = html;
+            }
+
+            // ===== SUPPRESSION =====
+            window.supprimerArticle = function(id) {
+                if(confirm('Supprimer cet article ?')) {
+                    produits = produits.filter(p => p.id !== id);
+                    localStorage.setItem('babaProduits', JSON.stringify(produits));
+                    afficherGalerie();
+                    afficherListeAdmin();
+                }
+            };
+
+            // ===== UPLOAD IMAGE =====
+            let imageData = '';
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const preview = document.getElementById('preview');
+
+            uploadArea.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        preview.src = ev.target.result;
+                        preview.style.display = 'block';
+                        imageData = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
-            grid.innerHTML = html;
-        }
 
-        window.commander = function(nom, prix) {
-            const phone = '22509004803'; // Votre numéro
-            const msg = encodeURIComponent(`Bonjour, je suis intéressé par la montre ${nom} au prix de ${prix} FCFA.`);
-            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-        };
+            // ===== AJOUTER ARTICLE =====
+            document.getElementById('saveBtn').addEventListener('click', function() {
+                const nom = document.getElementById('prodName').value.trim();
+                const prix = document.getElementById('prodPrice').value.trim();
+                const desc = document.getElementById('prodDesc').value.trim();
 
-        chargerProduits();
+                if(!nom || !prix || !desc || !imageData) {
+                    alert('Veuillez remplir tous les champs et ajouter une photo.');
+                    return;
+                }
+
+                const nouvelArticle = {
+                    id: Date.now(),
+                    nom: nom,
+                    prix: prix,
+                    desc: desc,
+                    image: imageData
+                };
+
+                produits.push(nouvelArticle);
+                localStorage.setItem('babaProduits', JSON.stringify(produits));
+
+                // Réinitialiser
+                document.getElementById('prodName').value = '';
+                document.getElementById('prodPrice').value = '';
+                document.getElementById('prodDesc').value = '';
+                preview.style.display = 'none';
+                preview.src = '#';
+                imageData = '';
+                fileInput.value = '';
+
+                afficherGalerie();
+                afficherListeAdmin();
+                alert('✅ Article ajouté !');
+            });
+
+            // ===== GESTION MODALES =====
+            const adminBtn = document.getElementById('adminBtn');
+            const passwordModal = document.getElementById('passwordModal');
+            const adminModal = document.getElementById('adminModal');
+            const submitCode = document.getElementById('submitCode');
+            const cancelCode = document.getElementById('cancelCode');
+            const closeAdminBtn = document.getElementById('closeAdminBtn');
+            const codeInput = document.getElementById('codeInput');
+
+            adminBtn.addEventListener('click', () => {
+                passwordModal.classList.add('show');
+            });
+
+            cancelCode.addEventListener('click', () => {
+                passwordModal.classList.remove('show');
+                codeInput.value = '';
+            });
+
+            submitCode.addEventListener('click', () => {
+                if(codeInput.value === CODE_SECRET) {
+                    passwordModal.classList.remove('show');
+                    adminModal.classList.add('show');
+                    afficherListeAdmin();
+                    codeInput.value = '';
+                } else {
+                    alert('Code incorrect');
+                }
+            });
+
+            closeAdminBtn.addEventListener('click', () => {
+                adminModal.classList.remove('show');
+            });
+
+            // Fermer la modale admin si on clique dehors (optionnel)
+            window.addEventListener('click', (e) => {
+                if(e.target === adminModal) {
+                    adminModal.classList.remove('show');
+                }
+                if(e.target === passwordModal) {
+                    passwordModal.classList.remove('show');
+                }
+            });
+
+            // ===== INIT =====
+            charger();
+        })();
     </script>
 </body>
-</html>
+            </html>
