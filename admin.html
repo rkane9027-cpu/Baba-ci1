@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration BABA CI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            border: 2px solid #D4AF37;
+        }
+
+        .admin-header {
+            background: #000;
+            color: #D4AF37;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+        }
+
+        .admin-header p {
+            color: #ccc;
+            margin-top: 10px;
+        }
+
+        .admin-login, .admin-panel {
+            padding: 30px;
+        }
+
+        .admin-login {
+            display: block;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-login h2, .admin-panel h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #D4AF37;
+            outline: none;
+        }
+
+        .btn {
+            background: #D4AF37;
+            color: #000;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .btn:hover {
+            background: #c4a032;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #bb2d3b;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .upload-area {
+            border: 3px dashed #D4AF37;
+            padding: 25px;
+            text-align: center;
+            margin: 15px 0;
+            background: #f9f9f9;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .upload-area i {
+            font-size: 2.5rem;
+            color: #D4AF37;
+        }
+
+        #preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: none;
+            border: 2px solid #D4AF37;
+        }
+
+        .product-list {
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .product-info p {
+            color: #D4AF37;
+            font-weight: 600;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #bb2d3b;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #D4AF37;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>BABA CI</h1>
+            <p>Espace propriétaire</p>
+        </div>
+
+        <!-- Formulaire de connexion -->
+        <div class="admin-login" id="loginForm">
+            <h2>Connexion</h2>
+            <input type="password" id="password" placeholder="Code secret">
+            <button class="btn" id="loginBtn">Se connecter</button>
+            <p style="text-align:center; margin-top:15px;">Code par défaut : <strong>2026</strong></p>
+            <div class="error" id="loginError"></div>
+        </div>
+
+        <!-- Panneau d'administration (caché par défaut) -->
+        <div class="admin-panel" id="adminPanel">
+            <h2>Ajouter un article</h2>
+
+            <input type="text" id="nom" placeholder="Nom de la montre">
+            <input type="number" id="prix" placeholder="Prix en FCFA">
+            <textarea id="description" placeholder="Description" rows="2"></textarea>
+
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Cliquez pour ajouter une photo</p>
+                <input type="file" id="fileInput" accept="image/*" style="display:none;">
+                <img id="preview" src="#" alt="Aperçu">
+            </div>
+
+            <button class="btn" id="ajouterBtn">Publier l'article</button>
+
+            <h2 style="margin-top: 30px;">Mes articles</h2>
+            <div class="product-list" id="productList"></div>
+
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour à la boutique</a>
+            <button class="btn btn-secondary" id="deconnexionBtn" style="margin-top: 10px;">Déconnexion</button>
+        </div>
+    </div>
+
+    <script>
+        // Code secret (vous pouvez le changer)
+        const SECRET_CODE = '2026';
+
+        // Gestion de la connexion
+        const loginForm = document.getElementById('loginForm');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginBtn = document.getElementById('loginBtn');
+        const passwordInput = document.getElementById('password');
+        const loginError = document.getElementById('loginError');
+        const deconnexionBtn = document.getElementById('deconnexionBtn');
+
+        loginBtn.addEventListener('click', function() {
+            if(passwordInput.value === SECRET_CODE) {
+                loginForm.style.display = 'none';
+                adminPanel.style.display = 'block';
+                chargerProduits(); // Charger la liste des articles
+            } else {
+                loginError.textContent = '❌ Code incorrect';
+            }
+        });
+
+        deconnexionBtn.addEventListener('click', function() {
+            adminPanel.style.display = 'none';
+            loginForm.style.display = 'block';
+            passwordInput.value = '';
+        });
+
+        // Variables pour les produits
+        let produits = [];
+
+        // Charger les produits depuis localStorage
+        function chargerProduits() {
+            const saved = localStorage.getItem('babaProduits');
+            if(saved) {
+                produits = JSON.parse(saved);
+            } else {
+                // Si rien n'est sauvegardé, on initialise avec des exemples
+                produits = [
+                    { id: 1, nom: 'Montre Or Noire', prix: '6900', desc: 'Élégance intemporelle', image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500' },
+                    { id: 2, nom: 'Collection Or Rose', prix: '15500', desc: 'Luxe et raffinement', image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500' }
+                ];
+                localStorage.setItem('babaProduits', JSON.stringify(produits));
+            }
+            afficherListeAdmin();
+        }
+
+        // Afficher la liste des articles dans l'admin
+        function afficherListeAdmin() {
+            const listDiv = document.getElementById('productList');
+            if(produits.length === 0) {
+                listDiv.innerHTML = '<p style="text-align:center; color:#888;">Aucun article</p>';
+                return;
+            }
+
+            let html = '';
+            produits.forEach(p => {
+                html += `
+                    <div class="product-item">
+                        <img src="${p.image}" onerror="this.src='https://via.placeholder.com/60'">
+                        <div class="product-info">
+                            <h4>${p.nom}</h4>
+                            <p>${p.prix} FCFA</p>
+                        </div>
+                        <button class="delete-btn" onclick="supprimerArticle(${p.id})">
+                            <i class="fas fa-trash"></i> Suppr.
+                        </button>
+                    </div>
+                `;
+            });
+            listDiv.innerHTML = html;
+        }
+
+        // Fonction de suppression accessible globalement
+        window.supprimerArticle = function(id) {
+            if(confirm('Supprimer cet article ?')) {
+                produits = produits.filter(p => p.id !== id);
+                localStorage.setItem('babaProduits', JSON.stringify(produits));
+                afficherListeAdmin(); // Mettre à jour la liste
+                // Optionnel : si la page publique est ouverte, elle se mettra à jour au prochain chargement
+            }
+        };
+
+        // Upload d'image
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        let imageData = '';
+
+        uploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    preview.src = ev.target.result;
+                    preview.style.display = 'block';
+                    imageData = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Ajouter un article
+        document.getElementById('ajouterBtn').addEventListener('click', function() {
+            const nom = document.getElementById('nom').value.trim();
+            const prix = document.getElementById('prix').value.trim();
+            const desc = document.getElementById('description').value.trim();
+
+            if(!nom || !prix || !desc || !imageData) {
+                alert('Veuillez remplir tous les champs et ajouter une photo.');
+                return;
+            }
+
+            // Créer un nouvel article avec un ID unique (timestamp)
+            const nouvelArticle = {
+                id: Date.now(),
+                nom: nom,
+                prix: prix,
+                desc: desc,
+                image: imageData
+            };
+
+            produits.push(nouvelArticle);
+            localStorage.setItem('babaProduits', JSON.stringify(produits));
+
+            // Réinitialiser le formulaire
+            document.getElementById('nom').value = '';
+            document.getElementById('prix').value = '';
+            document.getElementById('description').value = '';
+            preview.style.display = 'none';
+            preview.src = '#';
+            imageData = '';
+            fileInput.value = '';
+
+            // Mettre à jour la liste
+            afficherListeAdmin();
+
+            alert('✅ Article ajouté avec succès !');
+        });
+
+        // Initialiser au chargement de la page (si le panneau est visible)
+        // Note : le panneau n'est pas encore visible au début, mais on peut quand même préparer les données
+        chargerProduits();
+    </script>
+</body>
+</html>

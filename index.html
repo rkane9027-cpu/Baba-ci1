@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BABA CI - Collection 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        /* Header */
+        .hero {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 60px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero h2 {
+            font-size: 1.8rem;
+            color: #D4AF37;
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #D4AF37;
+            display: block;
+            font-size: 4rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 30px auto;
+            color: #ccc;
+        }
+
+        /* Infos bar */
+        .info-bar {
+            background: #D4AF37;
+            color: #000;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-weight: 600;
+            border-bottom: 3px solid #000;
+        }
+
+        .info-bar i {
+            margin-right: 8px;
+        }
+
+        /* Galerie */
+        .gallery {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .gallery h2 {
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            border-left: 6px solid #D4AF37;
+            padding-left: 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .card-img {
+            height: 260px;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .card:hover .card-img img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .card-content .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D4AF37;
+            margin: 10px 0;
+        }
+
+        .card-content .price::after {
+            content: " FCFA";
+            font-size: 1rem;
+            color: #777;
+            font-weight: 400;
+        }
+
+        .card-content p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-wa {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-wa:hover {
+            background: #20b859;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            color: white;
+            padding: 50px 20px 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-col h4 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .footer-col p {
+            margin: 10px 0;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-col i {
+            color: #D4AF37;
+            width: 20px;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+
+        .admin-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #D4AF37;
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-link:hover {
+            background: white;
+            color: #D4AF37;
+            border-color: #D4AF37;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .hero h1 span { font-size: 2.8rem; }
+            .info-bar { flex-direction: column; align-items: center; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero section (design de l'image) -->
+    <div class="hero">
+        <h2>BABA CI</h2>
+        <h1>COLLECTION <span>2026</span></h1>
+        <p>L'ÉLÉGANCE INTEMPORELLE<br>Découvrez notre sélection de montres de luxe et connectées.</p>
+    </div>
+
+    <!-- Barre d'informations -->
+    <div class="info-bar">
+        <span><i class="fas fa-map-marker-alt"></i> Yopougon, Côte d'Ivoire</span>
+        <span><i class="fas fa-phone-alt"></i> 09 00 48 03</span>
+        <span><i class="far fa-envelope"></i> christdior1@gmail.com</span>
+        <span><i class="fab fa-whatsapp"></i> 225 09 00 48 03</span>
+    </div>
+
+    <!-- Galerie des produits -->
+    <div class="gallery">
+        <h2>NOS MONTRES</h2>
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- Lien vers l'administration (visible pour vous) -->
+    <a href="admin.html" class="admin-link"><i class="fas fa-cog"></i> Administration</a>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>BABA CI</h4>
+                <p><i class="fas fa-store"></i> Blog personnel • Ventes en ligne</p>
+                <p><i class="fas fa-map-pin"></i> Yopougon, Abidjan</p>
+            </div>
+            <div class="footer-col">
+                <h4>CONTACT</h4>
+                <p><i class="fas fa-phone"></i> 09 00 48 03</p>
+                <p><i class="far fa-envelope"></i> christdior1@gmail.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>INFOS</h4>
+                <p><i class="fas fa-users"></i> +30K followers</p>
+                <p><i class="fas fa-users"></i> Communauté 239 membres</p>
+                <p><i class="fas fa-tag"></i> Promo 6900 FCFA</p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 BABA CI • Tous droits réservés
+        </div>
+    </footer>
+
+    <script>
+        // Charger les produits depuis le localStorage
+        let produits = [];
+
+        function chargerProduits() {
+            const saved = localStorage.getItem('babaProduits');
+            if(saved) {
+                produits = JSON.parse(saved);
+            } else {
+                // Produits par défaut
+                produits = [
+                    { id: 1, nom: 'Montre Or Noire', prix: '6900', desc: 'Élégance intemporelle • Cadran noir • Bracelet cuir', image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500' },
+                    { id: 2, nom: 'Collection Or Rose', prix: '15500', desc: 'Luxe et raffinement • Édition limitée', image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500' },
+                    { id: 3, nom: 'Chronographe Sport', prix: '25000', desc: 'Précision suisse • Mouvement automatique', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500' }
+                ];
+                localStorage.setItem('babaProduits', JSON.stringify(produits));
+            }
+            afficherProduits();
+        }
+
+        function afficherProduits() {
+            const grid = document.getElementById('productsGrid');
+            if(produits.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; padding:40px;">Aucun produit pour le moment.</p>';
+                return;
+            }
+
+            let html = '';
+            produits.forEach(p => {
+                html += `
+                    <div class="card">
+                        <div class="card-img">
+                            <img src="${p.image}" alt="${p.nom}">
+                        </div>
+                        <div class="card-content">
+                            <h3>${p.nom}</h3>
+                            <div class="price">${p.prix}</div>
+                            <p>${p.desc}</p>
+                            <button class="btn-wa" onclick="commander('${p.nom}', '${p.prix}')">
+                                <i class="fab fa-whatsapp"></i> Commander
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        window.commander = function(nom, prix) {
+            const phone = '22509004803'; // Votre numéro
+            const msg = encodeURIComponent(`Bonjour, je suis intéressé par la montre ${nom} au prix de ${prix} FCFA.`);
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        };
+
+        chargerProduits();
+    </script>
+</body>
+</html>
